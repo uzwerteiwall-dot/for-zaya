@@ -1,0 +1,533 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Only for ZAYA 💖</title>
+
+  <style>
+    :root{
+      --bg1:#0b0b14;
+      --bg2:#1a0b1f;
+      --border: rgba(255,255,255,.14);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.72);
+      --accent:#ff3f86;
+      --radius:22px;
+      --shadow: 0 24px 70px rgba(0,0,0,.45);
+    }
+    *{box-sizing:border-box}
+
+    body{
+      margin:0;
+      min-height:100vh;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 800px at 20% 10%, rgba(255,63,134,.20), transparent 60%),
+        radial-gradient(900px 700px at 80% 30%, rgba(255,179,200,.16), transparent 55%),
+        radial-gradient(800px 700px at 50% 90%, rgba(175,73,255,.10), transparent 60%),
+        linear-gradient(120deg, var(--bg1), var(--bg2));
+      overflow:hidden;
+    }
+
+    /* ========== INTRO FULLSCREEN (NO CARD) ========== */
+    .intro{
+      position:fixed;
+      inset:0;
+      display:grid;
+      place-items:center;
+      padding:22px;
+      z-index:50;
+      transition: opacity .65s ease, filter .65s ease;
+    }
+    .intro.hide{
+      opacity:0;
+      filter: blur(14px);
+      pointer-events:none;
+    }
+    .introInner{
+      width:min(980px, 100%);
+      text-align:center;
+      display:grid;
+      gap:14px;
+      align-content:center;
+    }
+    .introTitle{
+      margin:0;
+      font-size: clamp(34px, 5vw, 72px);
+      line-height:1.02;
+      letter-spacing:-.9px;
+      text-shadow: 0 18px 60px rgba(0,0,0,.45);
+    }
+    .introSub{
+      margin:0;
+      color:var(--muted);
+      font-size: 16px;
+      line-height:1.55;
+    }
+
+    /* Attention lines with zoom + blur */
+    .attentionWrap{
+      position:relative;
+      min-height:56px;
+      display:grid;
+      place-items:center;
+      margin-top:8px;
+    }
+    .attention{
+      position:absolute;
+      font-weight:900;
+      letter-spacing:-.2px;
+      font-size: clamp(16px, 2.2vw, 22px);
+      color: rgba(255,255,255,.92);
+      opacity:0;
+      transform: scale(1.12) translateY(8px);
+      filter: blur(18px);
+      transition: opacity .6s ease, transform .6s ease, filter .6s ease;
+      text-shadow: 0 12px 45px rgba(0,0,0,.35);
+      padding:0 10px;
+    }
+    .attention.show{
+      opacity:1;
+      transform: scale(1) translateY(0);
+      filter: blur(0);
+    }
+
+    .introBtns{
+      display:flex;
+      gap:12px;
+      justify-content:center;
+      flex-wrap:wrap;
+      margin-top:10px;
+    }
+    .btn{
+      border:0;
+      cursor:pointer;
+      user-select:none;
+      padding:12px 18px;
+      border-radius: 14px;
+      font-weight:900;
+      letter-spacing:.2px;
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      transition: transform .12s ease, filter .12s ease, background .12s ease;
+      color:var(--text);
+    }
+    .btn:active{transform:translateY(1px) scale(.99)}
+    .btn.primary{
+      background: linear-gradient(135deg, var(--accent), #ff1f6f);
+      box-shadow: 0 18px 40px rgba(255,63,134,.26);
+    }
+    .btn.primary:hover{filter:brightness(1.05)}
+    .btn.ghost{
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.14);
+    }
+    .btn.ghost:hover{background: rgba(255,255,255,.11)}
+    .introHint{
+      color: rgba(255,255,255,.62);
+      font-size: 13px;
+      margin-top:4px;
+    }
+
+    /* ========== MAIN PAGE CARD ========== */
+    .stage{
+      min-height:100vh;
+      display:none;               /* ✅ start hidden */
+      place-items:center;
+      padding:22px;
+      opacity:0;
+      transform: translateY(10px) scale(.98);
+      filter: blur(18px);
+      transition: opacity .7s ease, transform .7s ease, filter .7s ease;
+    }
+    .stage.show{
+      opacity:1;
+      transform: translateY(0) scale(1);
+      filter: blur(0);
+    }
+
+    .card{
+      width:min(920px, 100%);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.06));
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      position:relative;
+    }
+    .card:before{
+      content:"";
+      position:absolute; inset:-2px;
+      background:
+        radial-gradient(600px 220px at 20% 0%, rgba(255,63,134,.35), transparent 60%),
+        radial-gradient(540px 220px at 80% 0%, rgba(255,179,200,.30), transparent 60%);
+      opacity:.55;
+      pointer-events:none;
+    }
+    .inner{
+      position:relative;
+      padding:28px;
+      display:grid;
+      gap:18px;
+      min-height: 420px;
+    }
+
+    .topRow{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 14px;
+      border-radius:999px;
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.12);
+      backdrop-filter: blur(10px);
+      font-weight:800;
+      letter-spacing:.2px;
+    }
+    .badge .dot{
+      width:10px;height:10px;border-radius:999px;
+      background:var(--accent);
+      box-shadow: 0 0 0 6px rgba(255,63,134,.12);
+    }
+
+    h1{
+      margin:0;
+      font-size: clamp(34px, 4.8vw, 64px);
+      line-height:1.02;
+      letter-spacing:-.8px;
+      text-align:center;
+    }
+    p{
+      margin:0;
+      text-align:center;
+      color:var(--muted);
+      font-size: 16px;
+      line-height:1.55;
+    }
+
+    .buttons{
+      margin-top:8px;
+      display:flex;
+      gap:12px;
+      justify-content:center;
+      flex-wrap:wrap;
+      position:relative;
+      min-height:60px;
+    }
+    .small{
+      font-size:13px;
+      opacity:.8;
+      text-align:center;
+      margin-top:4px;
+    }
+    .result{
+      margin-top:14px;
+      display:none;
+      border-radius:18px;
+      padding:16px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.12);
+      text-align:center;
+    }
+    .result.show{display:block}
+    .result b{font-size:18px}
+    .hint{
+      color: rgba(255,255,255,.68);
+      font-size: 13px;
+      margin-top:6px;
+      text-align:center;
+    }
+
+    /* Floating emojis */
+    .float{
+      position:fixed;
+      top:-10px;
+      left:0;
+      z-index:999;
+      filter: drop-shadow(0 10px 18px rgba(0,0,0,.35));
+      pointer-events:none;
+      will-change: transform, opacity;
+    }
+
+    /* ========== VIDEO OVERLAY ========== */
+    .videoOverlay{
+      position:fixed;
+      inset:0;
+      background: rgba(0,0,0,.90);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      opacity:0;
+      pointer-events:none;
+      transition: opacity .6s ease;
+      z-index:9999;
+    }
+    .videoOverlay.show{
+      opacity:1;
+      pointer-events:auto;
+    }
+    .videoOverlay video{
+      width:min(90vw, 900px);
+      max-height:82vh;
+      border-radius:20px;
+      box-shadow: 0 30px 80px rgba(0,0,0,.6);
+      opacity:0;
+      filter: blur(20px) scale(1.05);
+      transition: opacity .6s ease, filter .6s ease, transform .6s ease;
+      background:#000;
+    }
+    .videoOverlay.show video{
+      opacity:1;
+      filter: blur(0) scale(1);
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      .intro, .attention, .stage, .videoOverlay, .videoOverlay video{transition:none}
+    }
+    @media (max-width:520px){
+      .inner{padding:20px; min-height: 520px;}
+    }
+  </style>
+</head>
+
+<body>
+  <!-- FULLSCREEN INTRO -->
+  <section class="intro" id="intro">
+    <div class="introInner">
+      <h2 class="introTitle">How are you shawty 😏</h2>
+      <p class="introSub">One second… I need your attention.</p>
+
+      <div class="attentionWrap" aria-live="polite">
+        <div class="attention show" id="a0">I have a question for you…</div>
+        <div class="attention" id="a1">And it’s kinda important 🥺</div>
+        <div class="attention" id="a2">Okay… don’t panic 😄</div>
+        <div class="attention" id="a3">Just look at this real quick 😌</div>
+      </div>
+
+      <div class="introBtns">
+        <button class="btn primary" id="continueBtn">Continue ➜</button>
+        <button class="btn ghost" id="sparkBtn">Magic ✨</button>
+      </div>
+
+      <!-- no auto-continue -->
+      <div class="introHint" id="autoHint">Tap “Continue” 😌</div>
+    </div>
+  </section>
+
+  <!-- MAIN STAGE -->
+  <div class="stage" id="stage">
+    <main class="card">
+      <div class="inner">
+        <div class="topRow">
+          <div class="badge"><span class="dot"></span> Only for ZAYA 💖</div>
+          <div class="badge">
+            <span class="dot" style="background:#a86bff; box-shadow:0 0 0 6px rgba(168,107,255,.12)"></span>
+            Just for you
+          </div>
+        </div>
+
+        <h1 id="question">Will you be my Valentine? 💖</h1>
+        <p id="sub">Choose carefully… there is a correct answer 😏</p>
+
+        <div class="buttons" id="btnArea">
+          <button class="btn primary" id="yesBtn">Yes 💘</button>
+          <button class="btn ghost" id="noBtn">No 🙃</button>
+        </div>
+        <div class="small" id="noHint">(*Try pressing “No” if you want to be dramatic*)</div>
+
+        <div class="result" id="resultBox">
+          <b id="resultTitle">YAY!! 💞</b>
+          <div class="hint" id="resultText">You just made me the happiest person. Valentine date is locked in. 🥰</div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- VIDEO OVERLAY (video must be in same folder, named valentine.mp4) -->
+  <div class="videoOverlay" id="videoOverlay">
+    <video id="valVideo" playsinline webkit-playsinline muted preload="auto">
+      <source src="valentine.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+  </div>
+
+  <script>
+    // ========= INTRO LINES (zoom + blur) =========
+    const intro = document.getElementById("intro");
+    const stage = document.getElementById("stage");
+    const continueBtn = document.getElementById("continueBtn");
+
+    const attention = [
+      document.getElementById("a0"),
+      document.getElementById("a1"),
+      document.getElementById("a2"),
+      document.getElementById("a3"),
+    ];
+    let i = 0;
+
+    function showAttention(idx){
+      attention.forEach((el, n) => el.classList.toggle("show", n === idx));
+    }
+
+    const attentionTimer = setInterval(() => {
+      i = (i + 1) % attention.length;
+      showAttention(i);
+    }, 1350);
+
+    // ✅ Continue ONLY (no auto continue), bulletproof transition
+    let started = false;
+    function startMain(){
+      if (started) return;
+      started = true;
+
+      clearInterval(attentionTimer);
+
+      intro.classList.add("hide");
+
+      stage.style.display = "grid";     // stage starts as display:none
+      stage.getBoundingClientRect();    // force reflow
+      stage.classList.add("show");
+
+      setTimeout(() => { intro.style.display = "none"; }, 750);
+    }
+    continueBtn.addEventListener("click", startMain);
+
+    // ========= MAGIC BUTTON =========
+    document.getElementById("sparkBtn").addEventListener("click", () => spawnHearts(18));
+
+    // ========= VALENTINE LOGIC =========
+    const question = document.getElementById("question");
+    const sub = document.getElementById("sub");
+    const noBtn = document.getElementById("noBtn");
+    const yesBtn = document.getElementById("yesBtn");
+    const resultBox = document.getElementById("resultBox");
+    const resultTitle = document.getElementById("resultTitle");
+    const resultText = document.getElementById("resultText");
+    const noHint = document.getElementById("noHint");
+
+    const noLines = [
+      "Are you sure about that? 😳",
+      "Like… 100% sure? 🤨",
+      "Wait wait… think again 😏",
+      "That button seems suspicious…",
+      "Okay but what if I say please 🥺",
+      "Plot twist: you meant YES 💖",
+      "Final answer? (Wrong) 😅",
+      "Alright… I’ll ask nicer… will you? 💘"
+    ];
+    let noCount = 0;
+
+    function dodgeButton(){
+      const maxX = 140, maxY = 50;
+      const x = (Math.random()*2 - 1) * maxX;
+      const y = (Math.random()*2 - 1) * maxY;
+      noBtn.style.transform = `translate(${x}px, ${y}px)`;
+    }
+
+    noBtn.addEventListener("click", () => {
+      question.textContent = noLines[Math.min(noCount, noLines.length - 1)];
+      sub.textContent = "I’ll wait… but I know you’re about to choose YES 😌";
+
+      const labels = ["No 🙃","No 😅","No 😳","Still no? 😭","Ok fine… 🙄","I’m joking 😇","Maybe… 😶","YES (click me) 😏"];
+      noBtn.textContent = labels[Math.min(noCount, labels.length - 1)];
+
+      if (noCount >= 2) dodgeButton();
+      noHint.textContent = "Nice try 😄";
+      noCount++;
+    });
+
+    // ========= VIDEO PLAY AFTER YES + FULLSCREEN ON MOBILE =========
+    const videoOverlay = document.getElementById("videoOverlay");
+    const valVideo = document.getElementById("valVideo");
+
+    async function tryFullscreen(videoEl){
+      try{
+        if (videoEl.requestFullscreen) return await videoEl.requestFullscreen();
+        if (videoEl.webkitEnterFullscreen) return videoEl.webkitEnterFullscreen(); // iOS Safari
+        if (videoEl.webkitRequestFullscreen) return videoEl.webkitRequestFullscreen();
+      } catch(e) {}
+    }
+
+    yesBtn.addEventListener("click", async () => {
+      question.textContent = "Best choice ever 💖";
+      sub.textContent = "You’re officially my Valentine. Deal sealed.";
+
+      resultBox.classList.add("show");
+      resultTitle.textContent = "YAY!! 💞";
+      resultText.textContent = "You just made me the happiest person. Valentine date is locked in. 🥰";
+
+      noBtn.disabled = true;
+      noBtn.style.opacity = "0.5";
+      noBtn.style.cursor = "not-allowed";
+      noBtn.style.transform = "translate(0,0)";
+
+      spawnHearts(28);
+
+      // Show overlay first (nice on desktop)
+      videoOverlay.classList.add("show");
+
+      // Play (YES click counts as user gesture)
+      try{
+        await valVideo.play();
+      } catch (e){
+        valVideo.controls = true; // fallback if blocked
+      }
+
+      // Attempt fullscreen on mobile
+      await tryFullscreen(valVideo);
+
+      // Try unmute after play (may still require manual unmute on some browsers)
+      try { valVideo.muted = false; } catch(e) {}
+    });
+
+    // Close video on tap (overlay)
+    videoOverlay.addEventListener("click", () => {
+      valVideo.pause();
+      valVideo.currentTime = 0;
+      videoOverlay.classList.remove("show");
+      valVideo.controls = false;
+    });
+
+    // Auto-close when video ends
+    valVideo.addEventListener("ended", () => {
+      videoOverlay.classList.remove("show");
+      valVideo.currentTime = 0;
+    });
+
+    // ========= FLOATING EMOJIS =========
+    function spawnHearts(n=18){
+      for(let k=0;k<n;k++){
+        const el = document.createElement("div");
+        el.className = "float";
+        el.textContent = Math.random() > 0.5 ? "💖" : "✨";
+        el.style.left = (Math.random()*100) + "vw";
+        el.style.fontSize = (16 + Math.random()*22) + "px";
+        document.body.appendChild(el);
+
+        const drift = (Math.random()*160 - 80);
+        const dur = 1200 + Math.random()*900;
+        const start = performance.now();
+
+        const animate = (t) => {
+          const p = Math.min(1, (t-start)/dur);
+          el.style.transform = `translate(${drift*p}px, ${110*p}vh) rotate(${p*240}deg)`;
+          el.style.opacity = String(1 - p);
+          if(p < 1) requestAnimationFrame(animate);
+          else el.remove();
+        };
+        requestAnimationFrame(animate);
+      }
+    }
+  </script>
+</body>
+</html>
